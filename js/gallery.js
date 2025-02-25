@@ -72,12 +72,12 @@ const galleryList = images.map(image => {
 
   const galleryLinks = document.createElement('a');
   galleryLinks.classList.add('gallery-link');
-  galleryLinks.href = image.original;
 
   const galleryImg = document.createElement('img');
   galleryImg.classList.add('gallery-image');
   galleryImg.src = image.preview;
   galleryImg.alt = image.description;
+  galleryImg.setAttribute('data-source', image.original);
 
   galleryItems.append(galleryLinks);
   galleryLinks.append(galleryImg);
@@ -93,14 +93,9 @@ function selectImg(event) {
 
   const target = event.target;
 
-  let imgSrc;
-
   if (target.nodeName === 'IMG') {
-    imgSrc = target.parentElement.href;
-  } else if (target.nodeName === 'A') {
-    imgSrc = target.href;
+    const imgSrc = target.getAttribute('data-source');
+    const instance = basicLightbox.create(`<img src="${imgSrc}" width="1280">`);
+    instance.show();
   }
-
-  const instance = basicLightbox.create(`<img src="${imgSrc}" width="1280">`);
-  instance.show();
 }
